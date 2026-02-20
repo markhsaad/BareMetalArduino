@@ -1,0 +1,10 @@
+services:
+  Embedded:
+    image: embedded
+    build: .
+    container_name: embedded-container
+    privileged: true
+    devices:
+      - "/dev/ttyACM0:/dev/ttyACM0"
+    volumes:
+      - ./:/app
