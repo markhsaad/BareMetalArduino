@@ -1,5 +1,7 @@
 # Bare Metal Arduino
 
+Credit to [Low Level](https://youtu.be/j4xw8QomkXs?si=8F10g2sGsCeOV5s-) for helping me get started.
+
 This is a simple project to demonstrate how to blink an LED on an Arduino Uno WiFi Rev2 using bare metal programming without the Arduino IDE. There are four main steps:
 
 1. Create a clean, easily reproducible environment, hence the decision to use Docker within WSL2.
