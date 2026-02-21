@@ -1,32 +1,33 @@
+// ATmega4809 datasheet: https://ww1.microchip.com/downloads/en/DeviceDoc/ATmega4808-4809-Data-Sheet-DS40002173A.pdf
+// Arduino Uno Wifi Rev 2 Pinout: https://docs.arduino.cc/resources/pinouts/ABX00021-full-pinout.pdf
+
 #include <avr/io.h>
 #include <util/delay.h>
 
-int main(void) {
-    /* 1. FORCE THE CLOCK TO RUN (Internal 16/20MHz) */
-    /* The ATmega4809 defaults to a divide-by-6 clock. 
-       This ensures the CPU isn't running too slow to see. */
+int main() {
+    /* read more later
+    Breakdown of the Code
     CPU_CCP = CCP_IOREG_gc;
-    CLKCTRL.MCLKCTRLB = 0; 
+    This "unlocks" protected registers. Many critical system settings, like clock controls, are guarded by Configuration Change Protection (CCP) to prevent accidental changes.
+    Writing the CCP_IOREG_gc key to this register provides a small window (typically 4 CPU cycles) during which the protected CLKCTRL registers can be modified.
+    CLKCTRL.MCLKCTRLB = 0;
+    This writes 0 to the Main Clock Control B register.
+    Setting this to 0 clears the PEN (Prescaler Enable) bit, effectively bypassing the divider.
+    By default, many of these chips start with a prescaler of 6 (running at ~3.33 MHz from a 20 MHz source); this command switches the CPU to the full 20 MHz. 
+    */
+    CPU_CCP = CCP_IOREG_gc;
+    CLKCTRL.MCLKCTRLB = 0;
+    
+    // from pinout, led controlled by port D, pin 6
 
-    /* 2. SET ALL PINS AS OUTPUTS */
-    /* We set every pin on the main ports to output mode. */
-    PORTA.DIRSET = 0xFF;
-    PORTB.DIRSET = 0xFF;
-    PORTC.DIRSET = 0xFF;
-    PORTD.DIRSET = 0xFF;
-    PORTE.DIRSET = 0xFF;
-    PORTF.DIRSET = 0xFF;
-
+    // P148
+    // set PORTD.DIR[6] as output
+    PORTD.DIRSET = PORTD.DIRSET | (1 << 6);
     while(1) {
-        /* 3. TOGGLE EVERY PIN */
-        PORTA.OUTTGL = 0xFF;
-        PORTB.OUTTGL = 0xFF;
-        PORTC.OUTTGL = 0xFF;
-        PORTD.OUTTGL = 0xFF;
-        PORTE.OUTTGL = 0xFF;
-        PORTF.OUTTGL = 0xFF;
-
-        /* Blink fast enough to be obvious (4 times per second) */
+        // P154
+        // toggle bit 6 of PORTD.OUT
+        PORTD.OUTTGL = PORTD.OUTTGL | (1 << 6);
+        
         _delay_ms(1000); 
     }
 }
