@@ -6,12 +6,12 @@ This is a simple project to demonstrate how to blink an LED on an Arduino Uno Wi
 
 1. Install [usbipd-win](https://github.com/dorssel/usbipd-win).
 2. Connect the Arduino to WSL2.
-    a. Open PowerShell and WSL2.
-    b. Connect the Arduino to the USB port.
-    c. (PowerShell) List the connected USB devices: `usbipd list`
-    d. (PowerShell) Note the `BUSID` (e.g., 2-3) and bind it (one-time setup): `usbipd bind --busid <BUSID>`
-    e. (PowerShell) Attach it to your running WSL instance (each time you reconnect): `usbipd attach --wsl --busid <BUSID>`
-    f. (WSL2) Find the port name of the device (likely /dev/ttyACM0 or /dev/ttyUSB0): `ls /dev/tty*`
+    1. Open PowerShell and WSL2.
+    2. Connect the Arduino to the USB port.
+    3. (PowerShell) List the connected USB devices: `usbipd list`
+    4. (PowerShell) Note the `BUSID` (e.g., 2-3) and bind it (one-time setup): `usbipd bind --busid <BUSID>`
+    5. (PowerShell) Attach it to your running WSL2 instance (each time you reconnect): `usbipd attach --wsl --busid <BUSID>`
+    6. (WSL2) Find the port name of the device (likely /dev/ttyACM0 or /dev/ttyUSB0): `ls /dev/tty*`
 
 ## Starting/Stopping the Docker Container
 
