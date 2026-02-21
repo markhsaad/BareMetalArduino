@@ -1,4 +1,4 @@
-# use modern linux base so we can get avr-gcc v7.3.0 or later to be able to compile for atmega4809
+# Use modern Linux base so we can get avr-gcc v7.3.0 or later to be able to compile for ATmega4809
 FROM alpine:latest
 
 RUN apk add --no-cache \

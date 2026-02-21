@@ -1,8 +1,8 @@
 services:
-  Embedded:
-    image: embedded
+  BareMetalArduino:
+    image: bare_metal_arduino
     build: .
-    container_name: embedded-container
+    container_name: bare-metal-arduino-container
     privileged: true
     devices:
       - "/dev/ttyACM0:/dev/ttyACM0"
