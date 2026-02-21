@@ -8,12 +8,12 @@
 * See also the doc folder.
 */
 
+#include <avr/io.h>
+#include <util/delay.h>
+
 // From [A] P1, the built-in LED is connected to PD06 (port D, pin 6) on the MCU.
 #define PORT PORTD
 #define PIN 6
-
-#include <avr/io.h>
-#include <util/delay.h>
 
 int main() {
     /*
