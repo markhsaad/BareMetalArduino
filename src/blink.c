@@ -8,8 +8,17 @@
 * See also the doc folder.
 */
 
+/*
+* From [B] P55, the CPU speed defaults to 20 MHz. This macro needs to be set for _delay_ms to function properly.
+* The more proper way to set it would be as a compiler flag `-DF_CPU=20000000UL` in the avr-gcc call,
+* but I have set it here for increased clarity. Note that it is set *before* the includes for headers 
+* that may depend on it, like util/delay.h 
+*/ 
+# define F_CPU 20000000UL
+
 #include <avr/io.h>
-#include <util/delay.h>
+#include <util/delay.h>  // Required for _delay_ms 
+#include <avr/cpufunc.h> // Required for _PROTECTED_WRITE
 
 // From [A] P1, the built-in LED is connected to PD06 (port D, pin 6) on the MCU.
 #define PORT PORTD
@@ -17,10 +26,9 @@
 
 int main() {
     /*
-    * In the compile command, we have the flag -DF_CPU=16000000UL which sets the MCU CPU speed to 16 MHz.
-    * However, reading online, it seems that the ATmega4809 has a default divison ratio of 6. This means 
-    * that the CPU is running at (16/6) MHz. If we do not account for this, then the command _delay_ms(1000) 
-    * will wait for 1 second based on a 16 MHz CPU speed which is really 6 seconds for a (16/6) MHz clock speed.
+    * From [B] P92, the divison ratio defaults to 6. This means that the CPU is running at (16/6) MHz. 
+    * If we do not account for this, then the command _delay_ms(1000) will wait for 1 second based on 
+    * a 16 MHz CPU speed, which is really 6 seconds for a (16/6) MHz clock speed.
     *
     * EXPECTED_DELAY_TIME_S = 1
     *
@@ -37,14 +45,21 @@ int main() {
     *                   = 16000000 * (1 / (16000000 / 6))
     *                   = 6 
     *
-    * To fix this, we either need to adjust the compile flag or disable the prescaler. Below, we do the latter.
+    * One way to fix this is to disable the prescaler, which is done below. See [B] P92.
     */
-
-    // From [B] P33, this briefly unlocks the necessary register to disable the prescaler for modification.
-    CPU_CCP = CCP_IOREG_gc;
     
-    // From [B] P92, this disables the prescaler.
-    CLKCTRL.MCLKCTRLB = 0;
+    _PROTECTED_WRITE(CLKCTRL.MCLKCTRLB, 0x00);
+
+    /*
+    * Note an alternative way to accomplish the same thing:
+    *
+    * CPU_CCP = CCP_IOREG_gc;
+    * CLKCTRL.MCLKCTRLB = 0;
+    *
+    * From [B] P33, the first line unlocks the necessary register to disable the prescaler for four CPU cycles.
+    * However, _PROTECTED_WRITE uses inline assembly calls which is a lot more reliable in ensuring that
+    * the register is set within the four-cycle window.
+    */
 
     // From [B] P148, this will set the specified pin on the specified port to be an output.
     PORT.DIRSET = PORT.DIRSET | (1 << PIN);
