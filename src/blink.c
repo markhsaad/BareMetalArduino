@@ -26,23 +26,23 @@
 
 int main() {
     /*
-    * From [B] P92, the divison ratio defaults to 6. This means that the CPU is running at (16/6) MHz. 
+    * From [B] P92, the divison ratio defaults to 6. This means that the CPU is running at (20/6) MHz. 
     * If we do not account for this, then the command _delay_ms(1000) will wait for 1 second based on 
-    * a 16 MHz CPU speed, which is really 6 seconds for a (16/6) MHz clock speed.
+    * a 20 MHz CPU speed, which is really 6 seconds for a (20/6) MHz clock speed.
     *
     * EXPECTED_DELAY_TIME_S = 1
     *
-    * EXPECTED_CPU_SPEED = 16000000
+    * EXPECTED_CPU_SPEED = 20000000
     * EXPECTED_CYCLES = EXPECTED_DELAY_TIME_S / (1 / EXPECTED_CPU_SPEED)
-    *                 = 1 / (1 / 16000000)
-    *                 = 16000000
+    *                 = 1 / (1 / 20000000)
+    *                 = 20000000
     *
     * DIVISON_RATIO = 6
     * ACTUAL_CPU_SPEED = EXPECTED_CPU_SPEED / DIVISON_RATIO
-    *                  = 16000000 / 6
+    *                  = 20000000 / 6
     *
     * ACTUAL_DELAY_TIME_S = EXPECTED_CYCLES * (1 / ACTUAL_CPU_SPEED)
-    *                   = 16000000 * (1 / (16000000 / 6))
+    *                   = 20000000 * (1 / (20000000 / 6))
     *                   = 6 
     *
     * One way to fix this is to disable the prescaler, which is done below. See [B] P92.
