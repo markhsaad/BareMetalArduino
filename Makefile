@@ -9,6 +9,8 @@ BIN_FILE = $(BUILD_DIR)/$(TARGET).bin
 HEX_FILE = $(BUILD_DIR)/$(TARGET).hex
 
 default:
+	mkdir -p $(BUILD_DIR)
+
 	avr-gcc -Os -mmcu=$(MCU) -c -o $(OBJ_FILE) $(SRC_FILE)
 	avr-gcc -mmcu=$(MCU) -o $(BIN_FILE) $(OBJ_FILE)
 	avr-objcopy -O ihex -R .eeprom $(BIN_FILE) $(HEX_FILE)
