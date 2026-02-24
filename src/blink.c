@@ -14,7 +14,7 @@
 * but I have set it here for increased clarity. Note that it is set *before* the includes for headers 
 * that may depend on it, like util/delay.h 
 */ 
-# define F_CPU 20000000UL
+#define F_CPU 20000000UL
 
 #include <avr/io.h>
 #include <util/delay.h>  // Required for _delay_ms 
