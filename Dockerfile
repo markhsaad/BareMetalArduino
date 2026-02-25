@@ -7,6 +7,7 @@ RUN apk add --no-cache \
     avr-libc \
     avrdude \
     make \
-    vim
+    vim \
+    tio
 
 WORKDIR /app
